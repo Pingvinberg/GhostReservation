@@ -37,6 +37,14 @@ namespace GhostReservation
                     /*MessageBox.Show(dataReader.GetValue(0) + " - " + dataReader.GetValue(1) + " - " + dataReader.GetValue(2));
                      Hantera datan som kommer i dataReader.GetValeue(0).tostring för få första värdet och hantera det.
                      dvs skapa en string här som vi skickar till resultbox.text
+
+                    ex.
+                    var data1 = dataReader.GetValue(0);
+                    var data2 = dataReader.GetValue(1);
+                    if (data1 > 0)
+                        {
+                            result = data1.toString() + " är större än 0" 
+                        }   
                      */
                 }
                 dataReader.Close();
