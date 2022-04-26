@@ -1,9 +1,11 @@
 using System.Data.SqlClient;
+using System.Text;
 
 namespace GhostReservation
 {
     public partial class Form1 : Form
     {
+        StringBuilder errorMessages = new StringBuilder();
 
         public Form1()
         {
@@ -18,6 +20,7 @@ namespace GhostReservation
 
         private string sqlQuery(string storeID, string articleId)
         {
+
             string result = null;
             string connetionString = null;
             SqlConnection connection;
@@ -51,11 +54,23 @@ namespace GhostReservation
                 command.Dispose();
                 connection.Close();
             }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    errorMessages.Append("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+                result =errorMessages.ToString();
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Can not open connection ! ");
+                result = ex.ToString();
             }
-            result = "Store ID: " + storeID + "\r\n" + "Article ID: " + articleId; //bara för att testa copy funktionen
+            result += "\r\n" + "Store ID: " + storeID + "\r\n" + "Article ID: " + articleId; //bara för att testa copy funktionen
             return result;
         }
 
