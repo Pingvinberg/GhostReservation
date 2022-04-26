@@ -14,8 +14,16 @@ namespace GhostReservation
 
 
         private void btnSearch_Click_1(object sender, EventArgs e)
-        {   
-            resultBox.Text = sqlQuery(storeIdBox.Text, articleIDBox.Text);
+        {
+            if (WithErrors())
+            {
+                resultBox.Text = "One or several fields are empty";
+            }
+            else
+            {
+                resultBox.Text = sqlQuery(storeIdBox.Text, articleIDBox.Text);
+            }
+            
         }
 
         private string sqlQuery(string storeID, string articleId)
@@ -72,6 +80,15 @@ namespace GhostReservation
             }
             result += "\r\n" + "Store ID: " + storeID + "\r\n" + "Article ID: " + articleId; //bara för att testa copy funktionen
             return result;
+        }
+
+        private bool WithErrors()
+        {
+            if (storeIdBox.Text.Trim() == String.Empty)
+                return true;
+            if (articleIDBox.Text.Trim() == String.Empty)
+                return true;            
+            return false;
         }
 
         private void button1_Click(object sender, EventArgs e)
