@@ -30,14 +30,18 @@ namespace GhostReservation
         {
 
             string result = null;
-            string connetionString = null;
+            string connectionString = null;
             SqlConnection connection;
             SqlCommand command;
             string sql = null;
             SqlDataReader dataReader;
-            connetionString = "Data Source=ServerName;Initial Catalog=DatabaseName;User ID=UserName;Password=Password";
-            sql = "Your SQL Statement Here , like Select * from product" + storeID +"blabla" + articleId;
-            connection = new SqlConnection(connetionString);
+            connectionString = 
+                "Data Source=ServerName;" +
+                "Initial Catalog=DatabaseName;" +
+                "User ID=UserName;" +
+                "Password=Password";
+            sql = "Your SQL Statement Here , like Select * from product" + storeID + "blabla" + articleId;
+            connection = new SqlConnection(connectionString);
             try
             {
                 connection.Open();
