@@ -59,14 +59,14 @@ namespace GhostReservation
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    result = "CustomerOrderStatus: " + (dataReader[0]).ToString() + "\n" +
-                             "SupplierArticleId: " + (dataReader[1]).ToString() + "\n" +
-                             "ArticleId: " + (dataReader[2]).ToString() + "\n" +
-                             "OrderId: " + (dataReader[3]).ToString() + "\n" +
-                             "RXStatus: " + (dataReader[4]).ToString() + "\n" +
-                             "+RXStatus: " + (dataReader[5]).ToString() + "\n" +
-                             "ReservedStockQty: " + (dataReader[6]).ToString() + "\n" +
-                             "ReservedStockInOrderQty: " + (dataReader[7]).ToString() + "\n";
+                    result = "CustomerOrderStatus: " + dataReader["CustomerOrderStatus"].ToString() + "\n" +
+                             "SupplierArticleId: " + dataReader["SupplierArticleId"].ToString() + "\n" +
+                             "ArticleId: " + dataReader["ArticleId"].ToString() + "\n" +
+                             "OrderId: " + dataReader["ExternalOrderId"].ToString() + "\n" +
+                             "RXStatus: " + dataReader["receptBestallningsRadStatus_id"].ToString() + "\n" +
+                             "+RXStatus: " + dataReader["receptBestallningsStatus_id"].ToString() + "\n" +
+                             "ReservedStockQty: " + dataReader["ReservedStockQty"].ToString() + "\n" +
+                             "ReservedStockInOrderQty: " + dataReader["ReservedStockInOrderQty"].ToString() + "\n";
                 }
                 dataReader.Close();
                 command.Dispose();
