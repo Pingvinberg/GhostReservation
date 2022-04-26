@@ -59,7 +59,14 @@ namespace GhostReservation
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    
+                    result = "CustomerOrderStatus: " + (dataReader[0]).ToString() + "\n" +
+                             "SupplierArticleId: " + (dataReader[1]).ToString() + "\n" +
+                             "ArticleId: " + (dataReader[2]).ToString() + "\n" +
+                             "OrderId: " + (dataReader[3]).ToString() + "\n" +
+                             "RXStatus: " + (dataReader[4]).ToString() + "\n" +
+                             "+RXStatus: " + (dataReader[5]).ToString() + "\n" +
+                             "ReservedStockQty: " + (dataReader[6]).ToString() + "\n" +
+                             "ReservedStockInOrderQty: " + (dataReader[7]).ToString() + "\n";
                 }
                 dataReader.Close();
                 command.Dispose();
