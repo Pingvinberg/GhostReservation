@@ -87,8 +87,7 @@ namespace GhostReservation
             catch (Exception ex)
             {
                 result = ex.ToString();
-            }
-            result += "\r\n" + "Store ID: " + storeID + "\r\n" + "Article ID: " + articleId; //bara för att testa copy funktionen
+            }            
             return result;
         }
 
