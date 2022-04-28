@@ -43,35 +43,31 @@
             // 
             // storeIdBox
             // 
-            this.storeIdBox.Location = new System.Drawing.Point(279, 118);
-            this.storeIdBox.Margin = new System.Windows.Forms.Padding(4);
+            this.storeIdBox.Location = new System.Drawing.Point(195, 93);
             this.storeIdBox.Name = "storeIdBox";
-            this.storeIdBox.Size = new System.Drawing.Size(94, 27);
+            this.storeIdBox.Size = new System.Drawing.Size(67, 23);
             this.storeIdBox.TabIndex = 0;
             // 
             // articleIDBox
             // 
-            this.articleIDBox.Location = new System.Drawing.Point(279, 194);
-            this.articleIDBox.Margin = new System.Windows.Forms.Padding(4);
+            this.articleIDBox.Location = new System.Drawing.Point(195, 153);
             this.articleIDBox.Name = "articleIDBox";
-            this.articleIDBox.Size = new System.Drawing.Size(253, 27);
+            this.articleIDBox.Size = new System.Drawing.Size(178, 23);
             this.articleIDBox.TabIndex = 1;
             // 
             // resultBox
             // 
-            this.resultBox.Location = new System.Drawing.Point(143, 322);
-            this.resultBox.Margin = new System.Windows.Forms.Padding(4);
+            this.resultBox.Location = new System.Drawing.Point(100, 254);
             this.resultBox.Multiline = true;
             this.resultBox.Name = "resultBox";
-            this.resultBox.Size = new System.Drawing.Size(717, 440);
+            this.resultBox.Size = new System.Drawing.Size(503, 348);
             this.resultBox.TabIndex = 2;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(279, 75);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.Location = new System.Drawing.Point(195, 59);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(107, 29);
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 3;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -79,10 +75,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(470, 75);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(329, 59);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(63, 29);
+            this.button1.Size = new System.Drawing.Size(44, 23);
             this.button1.TabIndex = 4;
             this.button1.Text = "Clear";
             this.button1.UseVisualStyleBackColor = true;
@@ -90,10 +85,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(726, 285);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(508, 225);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(136, 29);
+            this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 5;
             this.button2.Text = "Copy (ctrl + c)";
             this.button2.UseVisualStyleBackColor = true;
@@ -101,47 +95,43 @@
             // 
             // SupplierArticleIDBox
             // 
-            this.SupplierArticleIDBox.Location = new System.Drawing.Point(279, 157);
-            this.SupplierArticleIDBox.Margin = new System.Windows.Forms.Padding(4);
+            this.SupplierArticleIDBox.Location = new System.Drawing.Point(195, 124);
             this.SupplierArticleIDBox.Name = "SupplierArticleIDBox";
-            this.SupplierArticleIDBox.Size = new System.Drawing.Size(253, 27);
+            this.SupplierArticleIDBox.Size = new System.Drawing.Size(178, 23);
             this.SupplierArticleIDBox.TabIndex = 6;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(196, 121);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(137, 96);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 19);
+            this.label1.Size = new System.Drawing.Size(48, 15);
             this.label1.TabIndex = 7;
             this.label1.Text = "Store ID";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(113, 160);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(79, 126);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(158, 19);
+            this.label2.Size = new System.Drawing.Size(101, 15);
             this.label2.TabIndex = 8;
             this.label2.Text = "Supplier Article ID";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(186, 197);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(130, 156);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 19);
+            this.label3.Size = new System.Drawing.Size(55, 15);
             this.label3.TabIndex = 9;
             this.label3.Text = "Article ID";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1154, 874);
+            this.ClientSize = new System.Drawing.Size(808, 690);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -152,8 +142,6 @@
             this.Controls.Add(this.resultBox);
             this.Controls.Add(this.articleIDBox);
             this.Controls.Add(this.storeIdBox);
-            this.Font = new System.Drawing.Font("Roboto Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.Text = "Ghost Reservation";
