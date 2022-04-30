@@ -83,7 +83,7 @@ namespace GhostReservation
             SqlConnection connection;
             SqlCommand command;
             SqlDataReader dataReader;
-            sql = "DECLARE @StoreNo as int DECLARE @SupplierArticleId as varchar(20)  SET @StoreNo = @StoreNo SET @SupplierArticleId = @ArticleNo" +
+            sql = "DECLARE @StoreNo as int DECLARE @SupplierArticleId as varchar(20)  SET @StoreNo = @StoreId SET @SupplierArticleId = @ArticleId" +
                   "Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.*FROM CustomerOrders with(nolock) INNER JOIN CustomerOrderLines with(nolock) ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles with(nolock) ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId,RECEPTBESTALLNING.id,RECEPTBESTALLNING.StoreNo,ERPARTIKEL.erpId,ERPARTIKEL.varunummer,RECEPTBESTALLNING.receptBestallningsStatus_id,RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id      INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = @SupplierArticleId;') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = @SupplierArticleId AND CustomerOrders.StoreNo = @StoreNo and rex.varunummer = @SupplierArticleId and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC" +
                   "Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos with(nolock) inner join AllArticles with(nolock) on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = @StoreNo and AllArticles.SupplierArticleID = @SupplierArticleId";
 
@@ -93,8 +93,8 @@ namespace GhostReservation
                 connection.Open();
                 command = new SqlCommand(sql, connection);
                 command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("@StoreNo", storeID);
-                command.Parameters.AddWithValue("@ArticleNo", SupplierArticleId);                
+                command.Parameters.AddWithValue("@StoreId", storeID);
+                command.Parameters.AddWithValue("@ArticleId", SupplierArticleId);                
 
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
