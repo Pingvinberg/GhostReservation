@@ -59,10 +59,10 @@
             // 
             // resultBox
             // 
-            this.resultBox.Location = new System.Drawing.Point(12, 254);
+            this.resultBox.Location = new System.Drawing.Point(12, 185);
             this.resultBox.Multiline = true;
             this.resultBox.Name = "resultBox";
-            this.resultBox.Size = new System.Drawing.Size(784, 146);
+            this.resultBox.Size = new System.Drawing.Size(784, 215);
             this.resultBox.TabIndex = 2;
             // 
             // btnSearch
@@ -87,7 +87,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(701, 225);
+            this.button2.Location = new System.Drawing.Point(701, 156);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 5;
