@@ -20,7 +20,7 @@ namespace GhostReservation
         {
             if (SupplierArticleIDBox.Text != String.Empty && articleIDBox.Text == String.Empty)
             {
-                articleIDBox.Text = sqlQueryArticleID(SupplierArticleIDBox.Text);
+                SupplierArticleIDBox.Text = sqlQueryArticleID(articleIDBox.Text);
             }
             else if (WithErrors())
             {
@@ -28,19 +28,18 @@ namespace GhostReservation
             }
             else
             {
-                resultBox.Text = sqlQueryMain(storeIdBox.Text, articleIDBox.Text);
+                resultBox.Text = sqlQueryMain(storeIdBox.Text, SupplierArticleIDBox.Text);
             }
         }
 
-        private string sqlQueryArticleID(string supplierArticleID)
+        private string sqlQueryArticleID(string articleID)
         {
-            string result = null;
-            string connectionString = null;
+            string result = null;            
             string sql = null;
             SqlConnection connection;
             SqlCommand command;
             SqlDataReader dataReader;            
-            sql = "select SupplierArticleId from AllArticles where ArticleId = @SupplierArticleID";
+            sql = "select SupplierArticleId from AllArticles where ArticleId = @ArticleID";
 
             connection = new SqlConnection(_connectionString);
             try
@@ -48,11 +47,11 @@ namespace GhostReservation
                 connection.Open();
                 command = new SqlCommand(sql, connection);
                 command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("@SupplierArticleID", supplierArticleID);
+                command.Parameters.AddWithValue("@ArticleID", articleID);
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    result = dataReader["ArticleId"].ToString();
+                    result = dataReader["SupplierArticleId"].ToString();
                 }
                 dataReader.Close();
                 command.Dispose();
@@ -77,18 +76,15 @@ namespace GhostReservation
             return result;
         }
 
-        private string sqlQueryMain(string storeID, string articleId)
+        private string sqlQueryMain(string storeID, string SupplierArticleId)
         {
-            string result = null;
-            string connectionString = null;
+            string result = null;            
             string sql = null;
             SqlConnection connection;
             SqlCommand command;
-            SqlDataReader dataReader;            
-            sql = 
-               "SELECT TOP 1000 CustomerOrderStatus, ArticleID, CustomerOrderLineStatus, ExternalOrderId, OrderedQty, ReceivedQty,  rex.* FROM customerorders co with(nolock) JOIN customerorderlines col with(nolock) ON co.CustomerOrderNo = col.CustomerOrderNo JOIN openquery ('MYSQL-PHARMASUITE', 'SELECT RB.bestallningsDatum, RB.salesOrderId,ERPARTIKEL.varunummer, RBR.receptBestallningsRadStatus_id, RB.receptBestallningsStatus_id, RBR.ARTIKEL_ID FROM RECEPTBESTALLNING RB JOIN RECEPTBESTALLNINGRAD RBR ON RB.id = RBR.bestallning_id INNER JOIN ERPARTIKEL ON RBR.artikel_id = ERPARTIKEL.id where ERPARTIKEL.varunummer = @SupplierArticleId; ') rex ON rex.salesOrderId = co.CustomerOrderID AND rex.ARTIKEL_ID = col.ArticleID WHERE COL.ArticleID=@ArticleId AND co.StoreNo = @StoreNo and rex.ARTIKEL_ID = @ArticleId and co.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CO.CustomerOrderNo DESC" +
-               "select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, TotalStockQty, InStockQty, StockInOrderQty, ReservedStockInOrderQty, AvailableStockQty from StoreArticleInfos with(nolock) inner join AllArticles with(nolock) on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo where StoreNo = @StoreNo and StoreArticleInfos.ArticleNo = @ArticleNo" +
-               "select top 5 * from StockAdjustments with(nolock) where StoreNo = @StoreNo and ArticleNo = @ArticleNo order by AdjustmentDate desc";
+            SqlDataReader dataReader;
+            sql = "Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.*FROM CustomerOrders with(nolock) INNER JOIN CustomerOrderLines with(nolock) ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles with(nolock) ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId,RECEPTBESTALLNING.id,RECEPTBESTALLNING.StoreNo,ERPARTIKEL.erpId,ERPARTIKEL.varunummer,RECEPTBESTALLNING.receptBestallningsStatus_id,RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id      INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = @SupplierArticleId;') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = @SupplierArticleId AND CustomerOrders.StoreNo = @StoreNo and rex.varunummer = @SupplierArticleId and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC";
+
             connection = new SqlConnection(_connectionString);
             try
             {
@@ -96,7 +92,8 @@ namespace GhostReservation
                 command = new SqlCommand(sql, connection);
                 command.CommandType = CommandType.Text;
                 command.Parameters.AddWithValue("@StoreNo", storeID);
-                command.Parameters.AddWithValue("@ArticleNo", articleId);
+                command.Parameters.AddWithValue("@ArticleNo", SupplierArticleId);                
+
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
                 {
