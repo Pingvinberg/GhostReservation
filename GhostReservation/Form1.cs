@@ -35,9 +35,7 @@ namespace GhostReservation
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sql, connection);
-                command.CommandType = CommandType.Text;
-                //command.Parameters.Add("@StoreNo", SqlDbType.Int).Value = storeID;
-                //command.Parameters.Add("@SupplierArticleId", SqlDbType.VarChar, 80).Value = SupplierArticleId;
+                command.CommandType = CommandType.Text;                
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);

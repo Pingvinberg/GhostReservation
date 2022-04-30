@@ -59,10 +59,10 @@
             // 
             // resultBox
             // 
-            this.resultBox.Location = new System.Drawing.Point(100, 254);
+            this.resultBox.Location = new System.Drawing.Point(12, 254);
             this.resultBox.Multiline = true;
             this.resultBox.Name = "resultBox";
-            this.resultBox.Size = new System.Drawing.Size(642, 146);
+            this.resultBox.Size = new System.Drawing.Size(784, 146);
             this.resultBox.TabIndex = 2;
             // 
             // btnSearch
@@ -87,7 +87,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(508, 225);
+            this.button2.Location = new System.Drawing.Point(701, 225);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 23);
             this.button2.TabIndex = 5;
@@ -132,12 +132,11 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(105, 412);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 412);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(637, 266);
+            this.dataGridView1.Size = new System.Drawing.Size(784, 266);
             this.dataGridView1.TabIndex = 10;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Form1
             // 
