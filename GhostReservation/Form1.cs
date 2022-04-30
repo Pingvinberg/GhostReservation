@@ -18,14 +18,7 @@ namespace GhostReservation
 
         private void btnSearch_Click_1(object sender, EventArgs e)
         {
-            if (WithErrors())
-            {
-                resultBox.Text = "One or several fields are empty";
-            }
-            else
-            {
-                resultBox.Text = sqlQueryMain(storeIdBox.Text, SupplierArticleIDBox.Text);
-            }
+            resultBox.Text = sqlQueryMain(storeIdBox.Text, SupplierArticleIDBox.Text);
         }
 
         private string sqlQueryArticleID(string articleID)
