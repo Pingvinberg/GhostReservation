@@ -35,7 +35,7 @@ namespace GhostReservation
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sql, connection);
-                command.CommandType = CommandType.Text;                
+                command.CommandType = CommandType.Text;
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
