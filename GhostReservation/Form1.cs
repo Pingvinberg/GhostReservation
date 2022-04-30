@@ -21,49 +21,7 @@ namespace GhostReservation
             resultBox.Text = sqlQueryMain(storeIdBox.Text, SupplierArticleIDBox.Text);
         }
 
-        private string sqlQueryArticleID(string articleID)
-        {
-            string result = null;            
-            string sql = null;
-            SqlConnection connection;
-            SqlCommand command;
-            SqlDataReader dataReader;            
-            sql = "select SupplierArticleId from AllArticles where ArticleId = @ArticleID";
-
-            connection = new SqlConnection(_connectionString);
-            try
-            {
-                connection.Open();
-                command = new SqlCommand(sql, connection);
-                command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("@ArticleID", articleID);
-                dataReader = command.ExecuteReader();
-                while (dataReader.Read())
-                {
-                    result = dataReader["SupplierArticleId"].ToString();
-                }
-                dataReader.Close();
-                command.Dispose();
-                connection.Close();
-            }
-            catch (SqlException ex)
-            {
-                for (int i = 0; i < ex.Errors.Count; i++)
-                {
-                    errorMessages.Append("Index #" + i + "\n" +
-                        "Message: " + ex.Errors[i].Message + "\n" +
-                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
-                        "Source: " + ex.Errors[i].Source + "\n" +
-                        "Procedure: " + ex.Errors[i].Procedure + "\n");
-                }
-                resultBox.Text = errorMessages.ToString();
-            }
-            catch (Exception ex)
-            {
-                resultBox.Text = ex.ToString();
-            }
-            return result;
-        }
+        
 
         private string sqlQueryMain(string storeID, string SupplierArticleId)
         {
@@ -86,8 +44,7 @@ namespace GhostReservation
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);                              
-                dataGridView1.DataSource = dataTable;                
-                command.Dispose();
+                dataGridView1.DataSource = dataTable;
                 connection.Close();
             }
             catch (SqlException ex)
