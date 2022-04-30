@@ -13,37 +13,34 @@ namespace GhostReservation
 
         public Form1()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void btnSearch_Click_1(object sender, EventArgs e)
         {
-            resultBox.Text = sqlQueryMain(storeIdBox.Text, SupplierArticleIDBox.Text);
+            resultBox.Text = sqlQueryMain(int.Parse(storeIdBox.Text), int.Parse(SupplierArticleIDBox.Text));
         }
 
-        
-
-        private string sqlQueryMain(string storeID, string SupplierArticleId)
+        private string sqlQueryMain(int storeID, int SupplierArticleId)
         {
-            string result = null;            
-            string sql = null;            
-            SqlConnection connection;               
-            
-            sql = " DECLARE @StoreNo as int DECLARE @SupplierArticleId as varchar(20)  SET @StoreNo = @StoreId SET @SupplierArticleId = @ArticleId" +
-                  " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.*FROM CustomerOrders with(nolock) INNER JOIN CustomerOrderLines with(nolock) ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles with(nolock) ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId,RECEPTBESTALLNING.id,RECEPTBESTALLNING.StoreNo,ERPARTIKEL.erpId,ERPARTIKEL.varunummer,RECEPTBESTALLNING.receptBestallningsStatus_id,RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id      INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = @SupplierArticleId;') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = @SupplierArticleId AND CustomerOrders.StoreNo = @StoreNo and rex.varunummer = @SupplierArticleId and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC" +
-                  " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos with(nolock) inner join AllArticles with(nolock) on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = @StoreNo and AllArticles.SupplierArticleID = @SupplierArticleId";
+            string result = null;
+            string sql = null;
+            SqlConnection connection;
+
+            sql = " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.* FROM CustomerOrders INNER JOIN CustomerOrderLines ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId, RECEPTBESTALLNING.id, RECEPTBESTALLNING.StoreNo, ERPARTIKEL.erpId,ERPARTIKEL.varunummer,  RECEPTBESTALLNING.receptBestallningsStatus_id, RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = " + SupplierArticleId + ";') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = " + SupplierArticleId + " AND CustomerOrders.StoreNo = " + storeID + " and rex.varunummer = " + SupplierArticleId + " and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC " +
+                  " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos inner join AllArticles on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = " + storeID + " and AllArticles.SupplierArticleID = " + SupplierArticleId + " ";
 
             connection = new SqlConnection(_connectionString);
             try
             {
-                connection.Open();                
+                connection.Open();
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("@StoreId", storeID);
-                command.Parameters.AddWithValue("@ArticleId", SupplierArticleId);
+                //command.Parameters.Add("@StoreNo", SqlDbType.Int).Value = storeID;
+                //command.Parameters.Add("@SupplierArticleId", SqlDbType.VarChar, 80).Value = SupplierArticleId;
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
-                dataAdapter.Fill(dataTable);                              
+                dataAdapter.Fill(dataTable);
                 dataGridView1.DataSource = dataTable;
                 connection.Close();
             }
@@ -62,7 +59,7 @@ namespace GhostReservation
             catch (Exception ex)
             {
                 result = ex.ToString();
-            }            
+            }
             return result;
         }
 
@@ -91,11 +88,6 @@ namespace GhostReservation
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
