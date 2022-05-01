@@ -10,6 +10,8 @@ namespace GhostReservation
         StringBuilder errorMessages = new StringBuilder();
 
         private string _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+        DataTable dataTable1 = new DataTable();
+        DataTable dataTable2 = new DataTable();
 
         public Form1()
         {
@@ -38,15 +40,13 @@ namespace GhostReservation
 
                 SqlCommand command1 = new SqlCommand(sql1, connection);
                 command1.CommandType = CommandType.Text;
-                SqlDataAdapter dataAdapter1 = new SqlDataAdapter(command1);
-                DataTable dataTable1 = new DataTable();
+                SqlDataAdapter dataAdapter1 = new SqlDataAdapter(command1);                
                 dataAdapter1.Fill(dataTable1);
                 dataGridView1.DataSource = dataTable1;
 
                 SqlCommand command2 = new SqlCommand(sql2, connection);
                 command2.CommandType = CommandType.Text;
                 SqlDataAdapter dataAdapter2 = new SqlDataAdapter(command2);
-                DataTable dataTable2 = new DataTable();
                 dataAdapter2.Fill(dataTable2);
                 dataGridView2.DataSource = dataTable2;
                 
@@ -67,7 +67,7 @@ namespace GhostReservation
             catch (Exception ex)
             {
                 result = ex.ToString();
-            }
+            }            
             return result;
         }        
 
