@@ -24,22 +24,32 @@ namespace GhostReservation
         private string sqlQueryMain(int storeID, int SupplierArticleId)
         {
             string result = null;
-            string sql = null;
+            string sql1 = null;
+            string sql2 = null;
             SqlConnection connection;
 
-            sql = " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.* FROM CustomerOrders INNER JOIN CustomerOrderLines ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId, RECEPTBESTALLNING.id, RECEPTBESTALLNING.StoreNo, ERPARTIKEL.erpId,ERPARTIKEL.varunummer,  RECEPTBESTALLNING.receptBestallningsStatus_id, RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = " + SupplierArticleId + ";') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = " + SupplierArticleId + " AND CustomerOrders.StoreNo = " + storeID + " and rex.varunummer = " + SupplierArticleId + " and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC " +
-                  " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos inner join AllArticles on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = " + storeID + " and AllArticles.SupplierArticleID = " + SupplierArticleId + " ";
+            sql1 = " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.* FROM CustomerOrders INNER JOIN CustomerOrderLines ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId, RECEPTBESTALLNING.id, RECEPTBESTALLNING.StoreNo, ERPARTIKEL.erpId,ERPARTIKEL.varunummer,  RECEPTBESTALLNING.receptBestallningsStatus_id, RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = " + SupplierArticleId + ";') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = " + SupplierArticleId + " AND CustomerOrders.StoreNo = " + storeID + " and rex.varunummer = " + SupplierArticleId + " and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC ";
+            sql2 = " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos inner join AllArticles on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = " + storeID + " and AllArticles.SupplierArticleID = " + SupplierArticleId + " ";
 
             connection = new SqlConnection(_connectionString);
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.CommandType = CommandType.Text;
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
-                DataTable dataTable = new DataTable();
-                dataAdapter.Fill(dataTable);
-                dataGridView1.DataSource = dataTable;
+
+                SqlCommand command1 = new SqlCommand(sql1, connection);
+                command1.CommandType = CommandType.Text;
+                SqlDataAdapter dataAdapter1 = new SqlDataAdapter(command1);
+                DataTable dataTable1 = new DataTable();
+                dataAdapter1.Fill(dataTable1);
+                dataGridView1.DataSource = dataTable1;
+
+                SqlCommand command2 = new SqlCommand(sql2, connection);
+                command2.CommandType = CommandType.Text;
+                SqlDataAdapter dataAdapter2 = new SqlDataAdapter(command2);
+                DataTable dataTable2 = new DataTable();
+                dataAdapter2.Fill(dataTable2);
+                dataGridView2.DataSource = dataTable2;
+                
                 connection.Close();
             }
             catch (SqlException ex)
@@ -59,16 +69,7 @@ namespace GhostReservation
                 result = ex.ToString();
             }
             return result;
-        }
-
-        private bool WithErrors()
-        {
-            if (storeIdBox.Text.Trim() == String.Empty)
-                return true;
-            if (articleIDBox.Text.Trim() == String.Empty)
-                return true;
-            return false;
-        }
+        }        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -85,9 +86,55 @@ namespace GhostReservation
             resultBox.DeselectAll();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
+            if(articleIDBox.Text != string.Empty)
+            {
+                SupplierArticleIDBox.Text = sqlQueryArticleId(articleIDBox.Text);
+            }
+        }
 
+        private string sqlQueryArticleId(string articleID)
+        {
+            string result = null;
+            string sql = null;            
+            SqlConnection connection;
+            SqlDataReader dataReader;
+
+            sql = "select SupplierArticleId from AllArticles where ArticleId = " + articleID;
+
+            connection = new SqlConnection(_connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.Text;
+                dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    resultBox.Text = dataReader.GetString(0);                             
+                }
+                dataReader.Close();
+                command.Dispose();
+                connection.Close();
+            }
+            catch (SqlException ex)
+            {
+                for (int i = 0; i < ex.Errors.Count; i++)
+                {
+                    errorMessages.Append("Index #" + i + "\n" +
+                        "Message: " + ex.Errors[i].Message + "\n" +
+                        "LineNumber: " + ex.Errors[i].LineNumber + "\n" +
+                        "Source: " + ex.Errors[i].Source + "\n" +
+                        "Procedure: " + ex.Errors[i].Procedure + "\n");
+                }
+                result = errorMessages.ToString();
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
         }
     }
 }
