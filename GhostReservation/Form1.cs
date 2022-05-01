@@ -91,7 +91,7 @@ namespace GhostReservation
             if(articleIDBox.Text != string.Empty)
             {
                 SupplierArticleIDBox.Text = sqlQueryArticleId(articleIDBox.Text);
-            }
+            }            
         }
 
         private string sqlQueryArticleId(string articleID)
@@ -112,7 +112,7 @@ namespace GhostReservation
                 dataReader = command.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    resultBox.Text = dataReader.GetString(0);                             
+                    SupplierArticleIDBox.Text = dataReader.GetString(0);                             
                 }
                 dataReader.Close();
                 command.Dispose();
@@ -128,11 +128,11 @@ namespace GhostReservation
                         "Source: " + ex.Errors[i].Source + "\n" +
                         "Procedure: " + ex.Errors[i].Procedure + "\n");
                 }
-                result = errorMessages.ToString();
+                resultBox.Text = errorMessages.ToString();
             }
             catch (Exception ex)
             {
-                result = ex.ToString();
+                resultBox.Text = ex.ToString();
             }
             return result;
         }
