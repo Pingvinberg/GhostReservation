@@ -26,12 +26,10 @@ namespace GhostReservation
         private string sqlQueryMain(int storeID, int SupplierArticleId)
         {
             string result = null;
-            string sql1 = null;
-            string sql2 = null;
             SqlConnection connection;
 
-            sql1 = " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.* FROM CustomerOrders INNER JOIN CustomerOrderLines ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId, RECEPTBESTALLNING.id, RECEPTBESTALLNING.StoreNo, ERPARTIKEL.erpId,ERPARTIKEL.varunummer,  RECEPTBESTALLNING.receptBestallningsStatus_id, RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = " + SupplierArticleId + ";') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = " + SupplierArticleId + " AND CustomerOrders.StoreNo = " + storeID + " and rex.varunummer = " + SupplierArticleId + " and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC ";
-            sql2 = " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos inner join AllArticles on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = " + storeID + " and AllArticles.SupplierArticleID = " + SupplierArticleId + " ";
+            string sql1 = " Select TOP 1000 CustomerOrderStatus,CustomerOrderLines.ArticleID,CustomerOrderLineStatus,ExternalOrderId,OrderedQty,ReceivedQty,rex.* FROM CustomerOrders INNER JOIN CustomerOrderLines ON CustomerOrders.CustomerOrderNo = CustomerOrderLines.CustomerOrderNo INNER JOIN AllArticles ON AllArticles.ArticleId = CustomerOrderLines.ArticleID FULL JOIN openquery (MYSQL, 'SELECT RECEPTBESTALLNING.salesOrderId, RECEPTBESTALLNING.id, RECEPTBESTALLNING.StoreNo, ERPARTIKEL.erpId,ERPARTIKEL.varunummer,  RECEPTBESTALLNING.receptBestallningsStatus_id, RECEPTBESTALLNINGRAD.ARTIKEL_ID FROM RECEPTBESTALLNING JOIN RECEPTBESTALLNINGRAD ON RECEPTBESTALLNING.id = RECEPTBESTALLNINGRAD.bestallning_id INNER JOIN ERPARTIKEL ON RECEPTBESTALLNINGRAD.artikel_id = ERPARTIKEL.erpId where ERPARTIKEL.varunummer = " + SupplierArticleId + ";') rex ON rex.salesOrderId = CustomerOrders.CustomerOrderId and rex.erpId = CustomerOrderLines.ArticleId WHERE AllArticles.SupplierArticleID = " + SupplierArticleId + " AND CustomerOrders.StoreNo = " + storeID + " and rex.varunummer = " + SupplierArticleId + " and CustomerOrders.CustomerOrderStatus <> 80 and CustomerOrderStatus <> 99 order by CustomerOrders.CustomerOrderNo DESC ";
+            string sql2 = " Select AllArticles.ArticleID, AllArticles.SupplierArticleID, StoreArticleInfos.ArticleNo, ReservedStockQty, InStockQty, ReservedStockInOrderQty from StoreArticleInfos inner join AllArticles on AllArticles.ArticleNo = StoreArticleInfos.ArticleNo  where StoreNo = " + storeID + " and AllArticles.SupplierArticleID = " + SupplierArticleId + " ";
 
             connection = new SqlConnection(_connectionString);
             try
@@ -51,6 +49,9 @@ namespace GhostReservation
                 dataGridView2.DataSource = dataTable2;
                 
                 connection.Close();
+                /*
+                    Logic for the query result and table to present to serivcedesk to just copy and paste to ticket.            
+                */
             }
             catch (SqlException ex)
             {
@@ -68,6 +69,7 @@ namespace GhostReservation
             {
                 result = ex.ToString();
             }            
+
             return result;
         }        
 
