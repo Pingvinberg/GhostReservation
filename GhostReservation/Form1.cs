@@ -50,7 +50,7 @@ namespace GhostReservation
                 
                 connection.Close();
                 /*
-                    Logic for the query result and table to present to serivcedesk to just copy and paste to ticket.            
+                    result = Logic for the query result and table to present to serivcedesk to just copy and paste to ticket.                        
                 */
             }
             catch (SqlException ex)
